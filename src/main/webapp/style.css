@@ -1,0 +1,9 @@
+/* Style for register values */
+.register {
+	color: #0000ff;
+}
+
+/* Style for register names */
+.register_name {
+	color: #00ccff;
+}

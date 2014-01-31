@@ -1,0 +1,55 @@
+package org.levex;
+public class Netocomp {
+	
+    private static Netocomp comp = null;
+
+	private static RegisterSet regset;
+
+	public static int newRegisterSet(int regs)
+	{
+		try {
+			regset = new RegisterSet(regs);
+			return 0;
+		} catch(Exception e) {
+			e.printStackTrace();
+			return 1;
+		}
+	}
+
+	public static RegisterSet getRegisterSet()
+	{
+		return regset;
+	}
+
+    public static void postInstruction(Instruction in) {
+		try {
+		    switch(in.getInstruction()) {
+				case 0:
+					break;
+				case Instruction.INSTRUCTION_MOVE:
+					try {
+						int p0 = in.getFirstParam();
+						int p1 = in.getSecondParam();
+						int p0_type = in.getFirstParamType();
+						int p1_type = in.getSecondParamType();
+						if(p1_type == Instruction.OPERAND_REGISTER) {
+							/* move to a register */
+							if(p0_type == Instruction.OPERAND_REGISTER) {
+								/* from register to register */
+								regset.setRegister(p1, regset.getRegister(p0).getValue());
+							} else {
+								/* literal to register */
+								regset.setRegister(p1, in.getFirstParam());
+							}
+						}
+						/* no RAM, we can't move to a literal */
+					} catch(Exception e) {
+						break;
+					}
+					break;
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+    }
+}
